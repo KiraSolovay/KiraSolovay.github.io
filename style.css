@@ -1,11 +1,8 @@
 body {
-    background-color: red
+    background-color: lightblue
 }
 
-.grid-container{
-    background-color:salmon;
-    display: grid;
-}
+
 
 #modal-container {
     position: absolute;
@@ -31,4 +28,30 @@ body {
   
 .shown {
     display: flex;
+}
+
+div.box button{
+    background-color:white;
+}
+
+.x {
+    background-color: red
+}
+
+.o {
+    background-color: green
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);  /* Three columns with equal width */
+    grid-gap: 10px;  /* Adjust the gap between boxes as needed */
+}
+
+.box {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    border: 1px solid #000; /* Add borders for better visibility */
+    text-align: center;
 }
