@@ -10,10 +10,14 @@
     <h1>Tic Tac Toe</h1>
     <div id="modal-container" class="shown">
         <div id="modal">
-            <p>Select a difficulty level.</p>
-            <button class="close-modal" id="easy">Easy</button>
-            <button class="close-modal" id="medium">Medium</button>
-            <button class="close-modal" id="hard">Hard</button>
+            <div class="flex-container">
+                <div class=""flex-item">Select a difficulty level: </div>
+                <div class="flex-item">
+                    <button class="close-modal" id="easy">Easy</button>
+                    <button class="close-modal" id="medium">Medium</button>
+                    <button class="close-modal" id="hard">Hard</button></div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="grid-container">
@@ -27,6 +31,7 @@
         <div class = "box" id= "box7"></div>
         <div class = "box" id= "box8"></div>
     </div>
+    <div id="chat"></div>
     <script src="script.js"></script>
 </body>
 </html>
