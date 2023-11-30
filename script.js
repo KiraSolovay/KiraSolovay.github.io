@@ -28,11 +28,9 @@ const difficultyPrompt = () => {
     difficultyBtns[0].addEventListener('click', function() {easyMode = true;
         easyGame();})
     difficultyBtns[1].addEventListener('click', function() {mediumMode = true;
-        mediumGame();
-    logChat("Medium Difficulty!");})
+        mediumGame();})
     difficultyBtns[2].addEventListener('click', function() {hardMode = true;
-        hardGame();
-    logChat("Hard Mode!")})
+        hardGame();})
 }
 
 // make each of the 9 boxes an object with 3 booleans and a "play" method
@@ -62,6 +60,10 @@ class boxObject {
             }
         }
     }
+    unmark(){
+        this.blank = true;
+        this.value = "click to mark"
+    }
 }
 // create an array with the box objects
 let boxObjects = [];
@@ -84,6 +86,17 @@ const generateBlankGrid = () => {
 const updateGrid = () => {
     for(let i = 0; i < 9; i++) {
         boxButtons[i].textContent = boxObjects[i].value
+    }
+}
+
+const updateColors = () => {
+    for (let i = 0; i < 9; i++) {
+        if (boxButtons[i].textContent === 'x'){
+            boxDivs[i].classList.add('x');
+        }
+        else if (boxButtons[i].textContent === 'o'){
+            boxDivs[i].classList.add('o');
+        }
     }
 }
 
@@ -186,11 +199,45 @@ const computerTurn = (xo) => {
             }
         }  
     }
+    else if (mediumMode){
+        let turnCompleted = false;
+        while (!turnCompleted) {
+            for (let i = 0; i< 9; i++){
+                // temporarily mark the object
+                if (boxObjects[i].blank){
+                    boxObjects[i].mark(xo);
+                    if(!hasWon(xo)){
+                        boxObjects[i].unmark()
+                    }
+                    else{
+                        boxButtons[i].textContent = xo;
+                        updateGrid();
+                        isItXTurn = !isItXTurn;
+                        turnCompleted = true;
+                        playGame();
+                        break;
+                    }
+                }
+            }
+            // IF NO WAY TO IMMEDIATELY WIN, JUST CHOOSE A RANDOM BOX
+            let targetBox = Math.floor(Math.random() * 9);
+            if(boxObjects[targetBox].blank && !turnCompleted) {
+                boxObjects[targetBox].mark(xo);
+                boxButtons[targetBox].textContent = xo;
+                updateGrid();
+                isItXTurn = !isItXTurn;
+                playGame();
+                turnCompleted = true;
+                break;
+            }
+        }  
+    }
 }
 
 // PlayGame Function
 
 const playGame = () => {
+    updateColors();
     if (!hasWon('x') && !hasWon('o') && !isGameTied()) {
         if (isItXTurn && userStartsAsX) {
             userTurn('x');   
@@ -226,7 +273,7 @@ const playGame = () => {
 const easyGame = () => {
     generateBlankGrid();
     updateGrid();
-    logChat(`You are playing on easy mode.`)
+    logChat(`You are playing on easy difficulty.`)
     if (userStartsAsX) {
         logChat("You go first as X, the computer will go next as O.");
     } else {
@@ -234,6 +281,34 @@ const easyGame = () => {
     }
     playGame();
 };
+
+
+// medium game function
+const mediumGame = () => {
+    generateBlankGrid();
+    updateGrid();
+    logChat(`You are playing on medium difficulty.`)
+    if (userStartsAsX) {
+        logChat("You go first as X, the computer will go next as O.");
+    } else {
+        logChat("The computer goes first as X, you go next as O.");
+    }
+    playGame();
+};
+
+// hard game function
+const hardGame = () => {
+    generateBlankGrid();
+    updateGrid();
+    logChat(`You are playing on hard difficulty.`)
+    if (userStartsAsX) {
+        logChat("You go first as X, the computer will go next as O.");
+    } else {
+        logChat("The computer goes first as X, you go next as O.");
+    }
+    playGame();
+};
+
 
 // MAIN
 difficultyPrompt();

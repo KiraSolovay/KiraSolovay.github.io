@@ -1,8 +1,12 @@
 body {
-    background-color: lightblue
+    background-color: pink;
+    font-family:'Trebuchet MS';
+    
 }
 
-
+h1 {
+    text-align:Center;
+}
 
 #modal-container {
     position: absolute;
@@ -51,7 +55,6 @@ body {
 
 
 div.box button{
-    background-color:white;
     height: 100%;
     width: 100%;
 }
@@ -68,7 +71,7 @@ div.box button{
     display: grid;
     grid-template-columns: repeat(3, 1fr); 
     grid-gap: 10px; 
-    background-color: bisque;
+    background-color: whitesmoke;
     padding: 5px;
     border-radius: 2px;
     border: dashed brown 4px;
@@ -80,12 +83,4 @@ div.box button{
     box-sizing: border-box;
     border: 1px solid #000;
     text-align: center;
-}
-
-.box .x{
-    background-color: red
-}
-
-.box .o{
-    background-color: green;
 }
