@@ -89,28 +89,28 @@ const updateGrid = () => {
 
 // determine win conditions
 const hasWon = (xo) => {
-    if (boxObjects[0].value == boxObjects[1].value == boxObjects[2].value == xo){
+    if (boxObjects[0].value == xo && boxObjects[1].value == xo && boxObjects[2].value == xo){
         return true;
     }
-    else if (boxObjects[3].value == boxObjects[4].value == boxObjects[5].value == xo){
+    else if (boxObjects[3].value == xo && boxObjects[4].value == xo && boxObjects[5].value == xo){
         return true;
     }
-    else if (boxObjects[6].value == boxObjects[7].value == boxObjects[8].value == xo){
+    else if (boxObjects[6].value == xo && boxObjects[7].value == xo && boxObjects[8].value == xo){
         return true;
     }
-    else if (boxObjects[0].value == boxObjects[3].value == boxObjects[6].value == xo){
+    else if (boxObjects[0].value == xo && boxObjects[3].value == xo && boxObjects[6].value == xo){
         return true;
     }
-    else if (boxObjects[1].value == boxObjects[4].value == boxObjects[7].value == xo){
+    else if (boxObjects[1].value == xo && boxObjects[4].value == xo && boxObjects[7].value == xo){
         return true;
     }
-    else if (boxObjects[2].value == boxObjects[5].value == boxObjects[8].value == xo){
+    else if (boxObjects[2].value == xo && boxObjects[5].value == xo && boxObjects[8].value == xo){
         return true;
     }
-    else if (boxObjects[0].value == boxObjects[4].value == boxObjects[8].value == xo){
+    else if (boxObjects[0].value == xo && boxObjects[4].value == xo && boxObjects[8].value == xo){
         return true;
     }
-    else if (boxObjects[2].value == boxObjects[4].value == boxObjects[6].value == xo){
+    else if (boxObjects[2].value == xo && boxObjects[4].value == xo && boxObjects[6].value == xo){
         return true;
     }
     else {
@@ -124,6 +124,7 @@ const isGameTied = () => {
             return false;
         }
     }
+    logChat("The game has tied.")
     return true;
 };
 
@@ -132,7 +133,6 @@ const markBox = (xo, boxButton) => {
     const index = Array.from(boxButtons).indexOf(boxButton);
     boxObjects[index].mark(xo);
     boxButton.textContent = boxObjects[index].value;
-    logChat(`Box #${index} has been marked as ${xo}.`);
 };
 
 const endTurn = () => {
@@ -155,7 +155,6 @@ const boxClickHandlerX = (event) => {
 };
 
 const userTurn = (xo) => {
-    logChat("it is your turn.")
     if(xo == 'x'){
         for (let boxButton of boxButtons) {
             boxButton.addEventListener('click', boxClickHandlerX);
@@ -170,15 +169,12 @@ const userTurn = (xo) => {
 
 const computerTurn = (xo) => {
     if(easyMode){
-        logChat(`it is the computer's turn.`
-        )
         let turnCompleted = false;
         while (!turnCompleted) {
             let targetBox = Math.floor(Math.random() * 9);
             if(boxObjects[targetBox].blank) {
                 boxObjects[targetBox].mark(xo);
                 boxButtons[targetBox].textContent = xo;
-                logChat(`Box #${targetBox} has been marked as ${xo}.`)
                 updateGrid();
                 isItXTurn = !isItXTurn;
                 playGame();
@@ -191,7 +187,6 @@ const computerTurn = (xo) => {
 // PlayGame Function
 
 const playGame = () => {
-    logChat(`playGame function called`)
     if (!hasWon('x') && !hasWon('o') && !isGameTied()) {
         if (isItXTurn && userStartsAsX) {
             userTurn('x');   
@@ -207,7 +202,18 @@ const playGame = () => {
         }
     }
     else{
-        logChat("the game is over")
+        if (hasWon('x') && userStartsAsX) {
+            logChat("Congrats! You won!")  
+        } 
+        else if (hasWon('x') && !userStartsAsX) {
+            logChat("Sorry, you lost.")
+        }
+        else if (hasWon('o') && userStartsAsX){
+            logChat("Sorry, you lost.")
+        }
+        else if(hasWon('o') && !userStartsAsX){
+            logChat("Congrats! You won!")
+        }
     }
 };
 
