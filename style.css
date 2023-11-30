@@ -41,9 +41,6 @@ body {
     align-items: center;
 }
 
-.flex-item{
-}
-
 .hidden {
     display: none;
   }
@@ -68,14 +65,14 @@ div.box button{
 
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);  /* Three columns with equal width */
-    grid-gap: 10px;  /* Adjust the gap between boxes as needed */
+    grid-template-columns: repeat(3, 1fr); 
+    grid-gap: 10px; 
 }
 
 .box {
     width: 100%;
     padding: 20px;
     box-sizing: border-box;
-    border: 1px solid #000; /* Add borders for better visibility */
+    border: 1px solid #000;
     text-align: center;
 }

@@ -8,6 +8,10 @@ const logChat = (string) => {
     chat.appendChild(p)
 }
 
+let easyMode, mediumMode, hardMode = false;
+let isItXTurn = true;
+const userStartsAsX = Math.random() > 0.5 ? true : false;
+
 // prompt the user for difficulty level
 const difficultyPrompt = () => {
     const modalContainer = document.getElementById("modal-container")
@@ -20,18 +24,16 @@ const difficultyPrompt = () => {
     for (let difficultyBtn of difficultyBtns){
         difficultyBtn.addEventListener('click', toggleClasses)
     }
-}
 
-// randomly generate who is player X (who goes first)
-const isUserX = () => {
-    if (Math.round(Math.random())=== 0){
-        return true;
-    }
-    else {
-        return false;
-    }
+    difficultyBtns[0].addEventListener('click', function() {easyMode = true;
+        easyGame();})
+    difficultyBtns[1].addEventListener('click', function() {mediumMode = true;
+        mediumGame();
+    logChat("Medium Difficulty!");})
+    difficultyBtns[2].addEventListener('click', function() {hardMode = true;
+        hardGame();
+    logChat("Hard Mode!")})
 }
-
 
 // make each of the 9 boxes an object with 3 booleans and a "play" method
 class boxObject {
@@ -116,47 +118,114 @@ const hasWon = (xo) => {
     }
 }
 
+const isGameTied = () => {
+    for (let boxObject of boxObjects) {
+        if (boxObject.blank === true) {
+            return false;
+        }
+    }
+    return true;
+};
+
+
 const markBox = (xo, boxButton) => {
     const index = Array.from(boxButtons).indexOf(boxButton);
     boxObjects[index].mark(xo);
     boxButton.textContent = boxObjects[index].value;
-    logChat(`Box #${index} has been marked.`);
+    logChat(`Box #${index} has been marked as ${xo}.`);
 };
 
 const endTurn = () => {
     for (let boxButton of boxButtons) {
-        boxButton.removeEventListener('click', boxClickHandler);
+        boxButton.removeEventListener('click', boxClickHandlerX);
+        boxButton.removeEventListener('click', boxClickHandlerO);
     }
+    isItXTurn = !isItXTurn;
+    playGame();
 };
 
-const boxClickHandler = (event) => {
+const boxClickHandlerO = (event) => {
+    markBox('o', event.target);
+    endTurn();
+};
+
+const boxClickHandlerX = (event) => {
     markBox('x', event.target);
     endTurn();
 };
 
-const userTurn = () => {
-    for (let boxButton of boxButtons) {
-        boxButton.addEventListener('click', boxClickHandler);
+const userTurn = (xo) => {
+    logChat("it is your turn.")
+    if(xo == 'x'){
+        for (let boxButton of boxButtons) {
+            boxButton.addEventListener('click', boxClickHandlerX);
+        }
+    }
+    else if (xo =='o'){
+        for (let boxButton of boxButtons) {
+            boxButton.addEventListener('click', boxClickHandlerO);
+        }
     }
 };
-// make easy function, user X
-// make easy function, computer X
 
-// make medium function, user X
-// make medium function, computer X
+const computerTurn = (xo) => {
+    if(easyMode){
+        logChat(`it is the computer's turn.`
+        )
+        let turnCompleted = false;
+        while (!turnCompleted) {
+            let targetBox = Math.floor(Math.random() * 9);
+            if(boxObjects[targetBox].blank) {
+                boxObjects[targetBox].mark(xo);
+                boxButtons[targetBox].textContent = xo;
+                logChat(`Box #${targetBox} has been marked as ${xo}.`)
+                updateGrid();
+                isItXTurn = !isItXTurn;
+                playGame();
+                turnCompleted = true;
+            }
+        }  
+    }
+}
 
-// make hard function, user X
-// make hard function, computer X
+// PlayGame Function
+
+const playGame = () => {
+    logChat(`playGame function called`)
+    if (!hasWon('x') && !hasWon('o') && !isGameTied()) {
+        if (isItXTurn && userStartsAsX) {
+            userTurn('x');   
+        } 
+        else if (isItXTurn && !userStartsAsX) {
+            computerTurn('x');   
+        }
+        else if (!isItXTurn && userStartsAsX){
+            computerTurn('o'); 
+        }
+        else if(!isItXTurn && !userStartsAsX){
+            userTurn('o');
+        }
+    }
+    else{
+        logChat("the game is over")
+    }
+};
+
+
+// easy game function
+const easyGame = () => {
+    generateBlankGrid();
+    updateGrid();
+    logChat(`You are playing on easy mode.`)
+    if (userStartsAsX) {
+        logChat("You go first as X, the computer will go next as O.");
+    } else {
+        logChat("The computer goes first as X, you go next as O.");
+    }
+    playGame();
+};
 
 // MAIN
 difficultyPrompt();
-generateBlankGrid();
-updateGrid();
-if(isUserX()){
-    logChat("You go first as X, the computer will go next as O.")
-    userTurn('x');
-}
-else{
-    logChat("The computer goes first as X, you go next as O.")
-}
+
 
