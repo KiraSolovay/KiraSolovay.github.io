@@ -157,12 +157,16 @@ const boxClickHandlerX = (event) => {
 const userTurn = (xo) => {
     if(xo == 'x'){
         for (let boxButton of boxButtons) {
-            boxButton.addEventListener('click', boxClickHandlerX);
+            if (boxButton.textContent === "click to mark") {
+                boxButton.addEventListener('click', boxClickHandlerX);
+            }
         }
     }
     else if (xo =='o'){
         for (let boxButton of boxButtons) {
+            if (boxButton.textContent === "click to mark") {
             boxButton.addEventListener('click', boxClickHandlerO);
+            }
         }
     }
 };

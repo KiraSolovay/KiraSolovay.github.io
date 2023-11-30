@@ -49,6 +49,7 @@ body {
     display: flex;
 }
 
+
 div.box button{
     background-color:white;
     height: 100%;
@@ -67,12 +68,24 @@ div.box button{
     display: grid;
     grid-template-columns: repeat(3, 1fr); 
     grid-gap: 10px; 
+    background-color: bisque;
+    padding: 5px;
+    border-radius: 2px;
+    border: dashed brown 4px;
 }
 
 .box {
     width: 100%;
-    padding: 20px;
+    padding: 10px;
     box-sizing: border-box;
     border: 1px solid #000;
     text-align: center;
+}
+
+.box .x{
+    background-color: red
+}
+
+.box .o{
+    background-color: green;
 }
