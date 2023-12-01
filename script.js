@@ -65,6 +65,18 @@ class boxObject {
         this.value = "click to mark"
     }
 }
+
+// opposite of xo function
+const opponent = (xo) => {
+    if (xo === 'x'){
+        return 'o'
+    }
+    else if (xo === 'o'){
+        return 'x'
+    }
+}
+
+
 // create an array with the box objects
 let boxObjects = [];
 
@@ -220,6 +232,59 @@ const computerTurn = (xo) => {
                 }
             }
             // IF NO WAY TO IMMEDIATELY WIN, JUST CHOOSE A RANDOM BOX
+            let targetBox = Math.floor(Math.random() * 9);
+            if(boxObjects[targetBox].blank && !turnCompleted) {
+                boxObjects[targetBox].mark(xo);
+                boxButtons[targetBox].textContent = xo;
+                updateGrid();
+                isItXTurn = !isItXTurn;
+                playGame();
+                turnCompleted = true;
+                break;
+            }
+        }  
+    }
+    else if (hardMode){
+        let turnCompleted = false;
+        while (!turnCompleted) {
+            for (let i = 0; i< 9; i++){
+                // temporarily mark the object to see if its a winning move
+                if (boxObjects[i].blank){
+                    boxObjects[i].mark(xo);
+                    if(!hasWon(xo)){
+                        boxObjects[i].unmark()
+                    }
+                    else{
+                        boxButtons[i].textContent = xo;
+                        updateGrid();
+                        isItXTurn = !isItXTurn;
+                        turnCompleted = true;
+                        playGame();
+                        break;
+                    }
+                }
+            }
+            // IF NO WAY TO IMMEDIATELY WIN CHECK FOR WAYS OPPONENT COULD WIN
+            if (!turnCompleted){for (let i = 0; i< 9; i++){
+                // temporarily mark the object the opponent's mark to see if its a winning move
+                if (boxObjects[i].blank){
+                    boxObjects[i].mark(opponent(xo));
+                    if(!hasWon(opponent(xo))){
+                        boxObjects[i].unmark();
+                    }
+                    else{
+                        boxObjects[i].unmark();
+                        boxObjects[i].mark(xo);
+                        boxButtons[i].textContent = xo;
+                        updateGrid();
+                        isItXTurn = !isItXTurn;
+                        turnCompleted = true;
+                        playGame();
+                        break;
+                    }
+                }
+            }}  
+            // if no way to immediately win or lose, pick randomly
             let targetBox = Math.floor(Math.random() * 9);
             if(boxObjects[targetBox].blank && !turnCompleted) {
                 boxObjects[targetBox].mark(xo);
