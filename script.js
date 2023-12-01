@@ -39,7 +39,7 @@ class boxObject {
         this.blank = true;
         this.x = false;
         this.o = false;
-        this.value = "click to mark"
+        this.value = " "
     }
     mark(xo){
         if (!this.blank) {
@@ -62,7 +62,7 @@ class boxObject {
     }
     unmark(){
         this.blank = true;
-        this.value = "click to mark"
+        this.value = " "
     }
 }
 
@@ -182,14 +182,14 @@ const boxClickHandlerX = (event) => {
 const userTurn = (xo) => {
     if(xo == 'x'){
         for (let boxButton of boxButtons) {
-            if (boxButton.textContent === "click to mark") {
+            if (boxButton.textContent === " ") {
                 boxButton.addEventListener('click', boxClickHandlerX);
             }
         }
     }
     else if (xo =='o'){
         for (let boxButton of boxButtons) {
-            if (boxButton.textContent === "click to mark") {
+            if (boxButton.textContent === " ") {
             boxButton.addEventListener('click', boxClickHandlerO);
             }
         }
